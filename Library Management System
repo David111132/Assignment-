@@ -1,0 +1,121 @@
+public class Book {
+    private String title;
+    private String author;
+    private String isbn;
+    private boolean isAvailable;
+
+    // Constructor
+    public Book(String title, String author, String isbn) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+        this.isAvailable = true; // By default, a new book is available
+    }
+
+    // Getters
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    // Method to borrow the book
+    public void borrow() {
+        if (isAvailable) {
+            isAvailable = false;
+            System.out.println("You have borrowed: " + title);
+        } else {
+            System.out.println("Sorry, " + title + " is currently unavailable.");
+        }
+    }
+
+    // Method to return the book
+    public void returnBook() {
+        isAvailable = true;
+        System.out.println("You have returned: " + title);
+    }
+}
+public class Patron {
+    private String name;
+    private int id;
+
+    // Constructor
+    public Patron(String name, int id) {
+        this.name = name;
+        this.id = id;
+    }
+
+    // Getters
+    public String getName() {
+        return name;
+    }
+
+    public int getId() {
+        return id;
+    }
+}
+public class Library {
+    private ArrayList books;
+    
+   // Constructor
+   public Library() {
+       books = new ArrayList<>();
+   }
+   
+   // Method to add a book to the library
+   public void addBook(Book book) {
+       books.add(book);
+       System.out.println("Added book: " + book.getTitle());
+   }
+   
+   // Method for a patron to borrow a book
+   public void borrowBook(Patron patron, Book book) {
+       System.out.println(patron.getName() + " (ID: " + patron.getId() + ") attempts to borrow: " + book.getTitle());
+       book.borrow();
+   }
+   
+   // Method for a patron to return a book
+   public void returnBook(Patron patron, Book book) {
+       System.out.println(patron.getName() + " (ID: " + patron.getId() + ") returns: " + book.getTitle());
+       book.returnBook();
+   }
+}
+public class App {
+
+   public static void main(String[] args) {
+
+       // Create library instance
+       Library library = new Library();
+
+       // Create some books
+       Book book1 = new Book("1984", "George Orwell", "123456789");
+       Book book2 = new Book("To Kill a Mockingbird", "Harper Lee", "987654321");
+
+       // Add books to the library
+       library.addBook(book1);
+       library.addBook(book2);
+
+       // Create patrons
+       Patron patron1 = new Patron("Alice", 1);
+       Patron patron2 = new Patron("Bob", 2);
+
+       // Simulate borrowing and returning books
+       library.borrowBook(patron1, book1);  // Alice borrows 1984
+       library.borrowBook(patron2, book1);  // Bob tries to borrow 1984 (should be unavailable)
+       
+       library.returnBook(patron1, book1);  // Alice returns 1984
+
+       library.borrowBook(patron2, book1);  // Bob borrows 1984 now that it’s available
+
+   }
+}
